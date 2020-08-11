@@ -33,10 +33,17 @@
 					</div>
 				</div>
 			</div>
+			<div class="card-footer">
+				<p>ผลรวมคือ : {{v()}}</p>
+			</div>
+			<div>
+
+			</div>
 		</div>
 	</div>
 
 	<script>
+		let sum = 0;
 		let app = new Vue({
 			el: '#app',
 			data: {
@@ -46,7 +53,12 @@
 			},
 			methods: {
 				x: function (row) {
-					return this.n * row
+					cal = this.n * row
+					sum += cal
+					return cal
+				},
+				v: function(){
+					return sum
 				}
 			},
 			computed: {
