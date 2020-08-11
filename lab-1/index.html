@@ -1,38 +1,66 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Lab - Multimedia Programming 2563 ITKMITL</title>
 	<link rel=stylesheet href="../src/reset.css">
 	<link rel=stylesheet href="lab.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+		integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200&display=swap" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
+
 <body class="paper">
-	<div id="app">
-		<input type="number" v-model="n">
-		<div class="space"></div>
-		<h2>สูตรคูณแม่ {{n}}</h2>
-		<h3
-		v-for="i in 12"
-		>{{n}} x {{i}} = {{x(i)}}</h3>
+	<div class="card" style="width: 40vw;">
+		<div id="app">
+			<div class="card-header">
+				<h2 id="header">สูตรคูณแม่ {{n}}</h2>
+				<p id="description">ปรับขึ้น-ลงได้ตามกำลังศรัทธา</p>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-sm-6">
+						<p id="description">สูตรคูณแม่ :</p>
+						<input type="number" v-model="n"><br>
+						<p id="description">คูณกันทั้งหมด :</p>
+						<input type="number" v-model="row">
+						<div class="space"></div>
+						<b><p>แม่ก่อนหน้า -> แม่ {{before_n}}</p></b>
+					</div>
+					<div class="col-sm-6">
+						<h5 v-for="i in r">{{n}} x {{i}} = {{x(i)}}</h5>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<script>
 		let app = new Vue({
-			el:'#app',
-			data:{
-				n:2,
+			el: '#app',
+			data: {
+				n: 2,
+				before_n: 1,
+				row: 12
 			},
-			methods:{
-				x: function(row){
-					return this.n*row
+			methods: {
+				x: function (row) {
+					return this.n * row
 				}
 			},
 			computed: {
-				x2: function(){
-					return this.n*2
+				r: function () {
+					return parseInt(this.row)
+				}
+			},
+			watch: {
+				n: function (a, b) {
+					this.before_n = b
 				}
 			}
 		});
 	</script>
 </body>
+
 </html>
