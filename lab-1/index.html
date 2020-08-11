@@ -27,6 +27,7 @@
 						<input type="number" v-model="row">
 						<div class="space"></div>
 						<b><p>แม่ก่อนหน้า -> แม่ {{before_n}}</p></b>
+						<i style="color: red;">ทุกคนมีแม่คนเดียว โกโก้</i>
 					</div>
 					<div class="col-sm-6">
 						<h5 v-for="i in r">{{n}} x {{i}} = {{x(i)}}</h5>
@@ -69,6 +70,7 @@
 			watch: {
 				n: function (a, b) {
 					this.before_n = b
+					sum = 0;
 				}
 			}
 		});
