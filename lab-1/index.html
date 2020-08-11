@@ -71,6 +71,11 @@
 				n: function (a, b) {
 					this.before_n = b
 					sum = 0;
+				},
+				row: function (a, b) {
+					if (a != b){
+						sum = 0;
+					}
 				}
 			}
 		});
