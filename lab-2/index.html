@@ -1,78 +1,74 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-	<title>The Members - ITKMITL Multimedia Programming 2563</title>
-
-	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-	<link rel="stylesheet" type="text/css" href="lab.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Which's your Dog</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 
 <body>
-	<div id="app">
-		About
-		<h3>Username {{person.username}}</h3>
-		<h3>Name {{person.name}}</h3>
-		<h3>Email {{person.email}}</h3>
-		<h3>Website {{person.website}}</h3>
-		<h3>Company {{person.company.name}}</h3>
-		<button @click="isthisgood()">เขาเป็นพนักงานที่ดีหรือไม่</button>
-		<h2>{{yesno.answer}}</h2>
-		<img :src="yesno.image" alt="">
-		Users
-		<h2 v-for="u in users" :data-id="u.id" @click="viewBio(u)">
-			<img :src="`https://picsum.photos/id/3${u.id}/200/300`" alt="">
-			{{u.username}}</h2>
-	</div>
+    <div id="app">
+        <div class="card mx-auto" style="width: 70%; top: 5vh;">
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-12 col-sm-12">
+                        <h3>น้องหมาตัวไหนที่โดนใจคุณ 🐶</h3>
+                        <hr>
+                    </div>
+                </div>
+                <div class="row align-items-center">
+                    <div class="col-12 col-sm-6 text-center">
+                        <h5>== มาสุ่มรูปน้องหมาพันธุ์ต่างๆกัน ==</h5>
+                        <img class="img-fluid" :src="`${app.img}`" alt="" style="width: 30vw;">
+                        <button class="btn btn-outline-info btn-lg btn-block" @click="randomdog()">Random More!</button>
+                    </div>
+                    <div class="col-12 col-sm-6">
+                        <h5 class="text-center">👉 วิธีการเล่น 👈</h5>
+                        <ul>
+                            <li>เลือกสายพันธุ์น้องหมาที่ชอบ</li>
+                            <li>ภาพด้านขวาจะเปลี่ยนเป็นน้องหมาที่เลือก</li>
+                            <li>กด Random More เพื่อสุ่มภาพน้องเพิ่ม</li>
+                            <li>เปลี่ยนสายพันธุ์น้องไปเรื่อยๆจนกว่าจะพอใจ</li>
+                        </ul>
+                        <select class="custom-select" id="type">
+                            <option v-for='(value,key) in breed' :data-id="key" >{{key}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-
-	<script>
-		fetch('https://jsonplaceholder.typicode.com/users')
-			.then(response => response.json())
-			.then(json => {
-				app.users = json
-				app.person = json[0]
-			})
-		let app = new Vue({
-			el: '#app',
-			methods: {
-				viewBio: function (user) {
-					this.person = user
-					this.yesno = {
-						"answer": "อยากรู้ คลิ้กเลย",
-						"forced": false,
-						"image": ""
-					}
-				},
-				isthisgood: function () {
-					fetch('https://yesno.wtf/api')
-						.then(response => response.json())
-						.then(json => {
-							app.yesno = json
-						})
-				}
-			},
-			data: {
-				yesno:
-				{
-					"answer": "อยากรู้ คลิ้กเลย",
-					"forced": false,
-					"image": ""
-				},
-				person: {
-					id: 0,
-					name: '..loading',
-					username: '..loading',
-					email: '..loading',
-					website: '..loading',
-					company: {
-						name: '..loading',
-					}
-				},
-				users: []
-			}
-		})
-	</script>
+    <script>
+        var choosedog =  document.getElementById("type").value;
+        fetch('https://dog.ceo/api/breeds/list/all')
+            .then(response => response.json())
+            .then(json => {
+                app.breed = json.message
+            })
+            let app = new Vue({
+                el: '#app',
+                data:{
+                    breed:{},
+                    img:{}
+                },
+                // methods: {
+                //     randomdog: function(){
+                //         fetch("https://dog.ceo/api/breed/" + choosedog + "/images/random")
+				// 		.then(response => response.json())
+				// 		.then(json => {
+                //             app.img = json.message
+				// 		})
+                //     }
+                // }
+            })
+    </script>
 </body>
 
 </html>
