@@ -25,7 +25,7 @@
                 <div class="row align-items-center">
                     <div class="col-12 col-sm-6 text-center">
                         <h5>== มาสุ่มรูปน้องหมาพันธุ์ต่างๆกัน ==</h5>
-                        <img class="img-fluid" :src="`${app.img}`" alt="" style="width: 30vw;">
+                        <img class="img-fluid" :src="img.image" alt="" style="width: 30vw;">
                         <button class="btn btn-outline-info btn-lg btn-block" @click="randomdog()">Random More!</button>
                     </div>
                     <div class="col-12 col-sm-6">
@@ -37,7 +37,7 @@
                             <li>เปลี่ยนสายพันธุ์น้องไปเรื่อยๆจนกว่าจะพอใจ</li>
                         </ul>
                         <select class="custom-select" id="type">
-                            <option v-for='(value,key) in breed' :data-id="key" >{{key}}</option>
+                            <option v-for='(value, key) in breed' :value="key">{{key}}</option>
                         </select>
                     </div>
                 </div>
@@ -46,7 +46,6 @@
     </div>
 
     <script>
-        var choosedog =  document.getElementById("type").value;
         fetch('https://dog.ceo/api/breeds/list/all')
             .then(response => response.json())
             .then(json => {
@@ -55,18 +54,35 @@
             let app = new Vue({
                 el: '#app',
                 data:{
-                    breed:{},
-                    img:{}
+                    breed: "",
+                    img: {
+                        "image" : "",
+                        "status" : "success"
+                    },
+                    random: {
+                        "image" : "",
+                        "status" : "loading"
+                    }
                 },
-                // methods: {
-                //     randomdog: function(){
-                //         fetch("https://dog.ceo/api/breed/" + choosedog + "/images/random")
-				// 		.then(response => response.json())
-				// 		.then(json => {
-                //             app.img = json.message
-				// 		})
-                //     }
-                // }
+                methods: {
+                    randomdog: function(){
+                        if (document.querySelector("#type").value){
+                            var chDog = document.querySelector("#type").value
+                        }else{
+                            var chDog = 'affenpinscher'
+                        }
+                        // var chDog = document.querySelector("#type").value;
+                        // console.log(chDog)
+                        fetch("https://dog.ceo/api/breed/" + chDog + "/images/random")
+						.then(response => response.json())
+						.then(json => {
+                            this.img.image = json.message
+						})
+                    },
+                },
+                mounted: function(){
+                    this.randomdog()
+                }
             })
     </script>
 </body>
