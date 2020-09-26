@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Color Game - Multimedia Programming 2563 ITKMITL</title>
 	<link rel="stylesheet" type="text/css" href="../src/reset.css">
 	<link rel="stylesheet" type="text/css" href="lab.css">
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
+
 <body>
 	<div id="canvas">
 		<section id="canvas_header">
@@ -15,15 +17,10 @@
 		</section>
 		<section id="canvas_main">
 			<main>
-				<a-dot></a-dot>
-				<a-dot></a-dot>
-				<a-dot></a-dot>
-				<a-dot></a-dot>
-				<a-dot></a-dot>
-				<a-dot style="--l:80%"></a-dot>
-				<a-dot data-pick="true"></a-dot>
-				<a-dot></a-dot>
-				<a-dot></a-dot>
+				<div class="a-dot" v-for="i in row*row"
+				:style="{'--row':row,
+				'--h':h,
+				'--l':l+'%'}" :data-pick="i == pick" @click="check(i)"></div>
 			</main>
 		</section>
 		<section id="canvas_footer">
@@ -34,38 +31,52 @@
 	</div>
 
 	<script>
-		let picklight = "20%" //เลือกว่ารอบนี้ อันพิเศษจะมีความสว่าง 20%
-		//document.registerElement('a-dot') //ให้ vue รู้จัก a-dot
+		let picklight = "30%" //เลือกว่ารอบนี้ อันพิเศษจะมีความสว่าง 20%
+		// document.registerElement('a-dot') //ให้ vue รู้จัก a-dot
 
-		function rand(start,stop){//สร้างฟังก์ชัน random ไว้ใช้
-			let shift = (stop-start)+1
-			return Math.floor(Math.random()*100%shift)+start
+		function rand(start, stop) {//สร้างฟังก์ชัน random ไว้ใช้
+			let shift = (stop - start) + 1
+			return Math.floor(Math.random() * 100 % shift) + start
 		}
 
 		let app = new Vue({
-			el:'#canvas',
-			data:{
-				row:2, //จำนวนแถวที่จะมีในรอบนี้
-				h:330, // hue ในรอบนี้
-				time:10, //เวลาเริ่มต้น
-				score:0, //คะแนนเริ่มต้น
-				pick:1, //หมายเลขวงกลมที่จะสีแตกต่างจากก้อนอื่นๆ
-				l:30,//ความสว่างของสีทั่วไปในรอบนี้
+			el: '#canvas',
+			data: {
+				row: 2, //จำนวนแถวที่จะมีในรอบนี้
+				h: rand(1,360), // hue ในรอบนี้
+				time: 20, //เวลาเริ่มต้น
+				score: 0, //คะแนนเริ่มต้น
+				pick: 1, //หมายเลขวงกลมที่จะสีแตกต่างจากก้อนอื่นๆ
+				l: 40,//ความสว่างของสีทั่วไปในรอบนี้
 			},
 			methods: {
+				check(e){
+					this.h = rand(1,360)
+					if (e == this.pick){
+						this.correct();
+					}else{
+						this.pick = rand(1,this.row*this.row);
+					}
+				},
+				correct(){
+					this.row += 1;
+					this.pick = rand(1,this.row * this.row);
+					this.score += 1;
+				}
 
 			}
 		})
 		//ทำให้แคนวาสมี --picklight ตามที่กำหนดไว้ข้างบนนี้
-		document.querySelector('#canvas').style.setProperty('--picklight',picklight);
-		
-		let counter = setInterval(()=>{
-			if (app.time>0) {
+		document.querySelector('#canvas').style.setProperty('--picklight', picklight);
+
+		let counter = setInterval(() => {
+			if (app.time > 0) {
 				app.time--
-			}else{
+			} else {
 				clearInterval(counter)
 			}
-		},1000);
+		}, 1000);
 	</script>
 </body>
+
 </html>

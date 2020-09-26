@@ -35,7 +35,7 @@ main{
 	justify-content: center;
 	align-items: center;
 }
-a-dot{
+.a-dot{
 	--row:3;
 	--h:330;
 	--l:50%;
@@ -49,6 +49,6 @@ a-dot{
 	cursor: pointer;
 }
 
-a-dot[data-pick="true"]{
+.a-dot[data-pick="true"]{
 	background-color: hsl(var(--h),100%,var(--picklight));
 }
