@@ -54,9 +54,9 @@
 				play: true,
 				turn: 0,
 				score: 0,
+				idnext: 2,
 				fruits: [
-					{ id: 1, type: 'red', pst: 1, run: true, step: 1 },
-					{ id: 3, type: 'yellow', pst: 0, run: true, step: 1 },
+					{ id: 1, type: 'yellow', pst: 0, run: true, step: 1 },
 				]
 			},
 			methods: {
@@ -74,9 +74,18 @@
 				turn: function (x) {
 					let count = this.fruits.lenght
 					for (let f in this.fruits) {
+
 						let run = this.fruits[f].run
 						if (run) {
 							if (this.play == true) {
+								random = Math.floor(Math.random() * 2) + 1
+								if (random == 1) {
+									setcoloer = 'red';
+								} else {
+									setcoloer = 'yellow';
+								}
+								this.fruits.push({id: this.idnext,type:setcoloer,pst: 0,run:true,step:1})
+								this.idnext++
 								if (this.fruits[f].pst == 10 && this.isRightArrow == 1) {
 									this.fruits[f].pst = this.fruits[f].pst + 3
 								}
