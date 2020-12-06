@@ -18,9 +18,9 @@
 		<section id="canvas_main" :data-play="play">
 			<main>
 				<div class="box _path" v-for="i in 14" :data-pst="i"></div>
-				<div class="box _toggle" data-pst="10" data-isrightarrow="1"></div>
+				<div class="box _toggle" data-pst="10" :data-isrightarrow="isRightArrow"></div>
 
-				<div class="box _fruit" :data-pst="f.pst" v-for="f in fruits"></div>
+				<div class="box _fruit" :data-pst="f.pst" v-for="f in fruits" :data-type="f.type"></div>
 
 				<div class="box _origin"></div>
 				<div class="box _12" data-pst="12"></div>
@@ -29,11 +29,11 @@
 			</main>
 		</section>
 		<section id="canvas_footer">
-			<div v-if="play" class="btn" id="toggle">
-				Toggle
+			<div v-if="play" class="btn" id="toggle" @click="change()">
+				กดเพื่อสลับสี
 			</div>
 			<div v-if="!play" class="btn" id="endgame">
-				Ene Game
+				แพ้แล้วเห็นไหมเนี่ย
 			</div>
 		</section>
 	</div>
@@ -45,33 +45,63 @@
 		}
 
 		let fruitCount = 3
-		let isRightArrow = 1
 		let speed = 1000
 		let app = new Vue({
 			el: '#canvas',
 			data: {
-				isRightArrow: isRightArrow,
+				isRightArrow: 1,
 				speed: speed,
 				play: true,
 				turn: 0,
 				score: 0,
 				fruits: [
-					{ id: 1, type: 'red', pst: 5, run: true, step: 1 },
-					{ id: 3, type: 'yellow', pst: 2, run: true, step: 1 },
+					{ id: 1, type: 'red', pst: 1, run: true, step: 1 },
+					{ id: 3, type: 'yellow', pst: 0, run: true, step: 1 },
 				]
 			},
-			methods: {},
-			computed: {},
+			methods: {
+				change() {
+					if (this.isRightArrow == 1) {
+						this.isRightArrow = 0
+					} else {
+						this.isRightArrow = 1
+					}
+				}
+			},
+			computed: {
+			},
 			watch: {
 				turn: function (x) {
 					let count = this.fruits.lenght
 					for (let f in this.fruits) {
 						let run = this.fruits[f].run
 						if (run) {
-							this.fruits[f].pst = this.fruits[f].pst+1
+							if (this.play == true) {
+								if (this.fruits[f].pst == 10 && this.isRightArrow == 1) {
+									this.fruits[f].pst = this.fruits[f].pst + 3
+								}
+								else if (this.fruits[f].pst == 13) {
+									this.fruits[f].pst = this.fruits[f].pst + 3
+								}
+								else if (this.fruits[f].pst == 12 || this.fruits[f].pst == 16) {
+									this.fruits[f].run = false;
+									if (this.fruits[f].pst == 12 && this.fruits[f].type == "red") {
+										this.score++
+									}
+									else if (this.fruits[f].pst == 16 && this.fruits[f].type == "yellow") {
+										this.score++
+									}
+									else {
+										this.play = false
+									}
+								}
+								else {
+									this.fruits[f].pst = this.fruits[f].pst + 1
+								}
+							}
 						}
 					}
-					
+
 				}
 			}
 		})
